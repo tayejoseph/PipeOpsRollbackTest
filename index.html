@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h3>Logs</h3>
+    <script>
+      // Update the URL to include the port number
+      const eventSource = new EventSource(
+        "https://api.pipeops.sh/project/logs/5ba2672e-cb77-4851-b20e-8cdc53150a9b?app=project&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0YWdpbmcrYnVidUBwaXBlb3BzLmlvIiwiZXhwIjoxNzMzMDkwNDU2LCJpZCI6OCwib3JpZ19pYXQiOjE3MzA0OTg0NTYsInBsYW4iOm51bGwsInV1aWQiOiJkM2QxMTdiZC0wZDc2LTQ4MWYtODk4Ni1mZWIxNGE5M2JkNzIifQ.GsptErZ4jQziXBv1Hn3mF8ZqQ8QPFCYn44jzAT76xZk"
+      );
+
+      eventSource.addEventListener("message", function (event) {
+        console.log("Log Data: ", event.data);
+
+        // Create a new div for each log entry
+        const logDiv = document.createElement("div");
+        logDiv.textContent = event.data;
+        logDiv.classList.add("log-entry"); // Add a class for styling
+
+        // Append the new div to the logs container
+        document.getElementById("logs").appendChild(logDiv);
+      });
+
+      eventSource.onerror = function (event) {
+        console.error("Error receiving stream", event);
+      };
+    </script>
+
+    <div id="logs"></div>
+
+    <style>
+      #logs {
+        margin-top: 10px;
+      }
+
+      .log-entry {
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        word-wrap: break-word; /* Ensure long messages don't overflow */
+      }
+    </style>
+  </body>
+</html>
